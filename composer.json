@@ -1,0 +1,12 @@
+{
+    "name": "koolreport/mongodb",
+    "version":"1.0.0",
+    "description": "Allow KoolReport to work with MongoDB",
+    "keywords": ["PHP","Reporting Tools","Data Report","Charts","MongoDB"],
+    "homepage": "https://www.koolreport.com",
+    "type": "library",
+    "license": "https://www.koolreport.com/license#mit-license",
+    "require": {
+        "mongodb/mongodb": "^1.1"
+    }
+}
