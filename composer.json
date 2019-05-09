@@ -5,7 +5,7 @@
     "keywords": ["PHP","Reporting Tools","Data Report","Charts","MongoDB"],
     "homepage": "https://www.koolreport.com",
     "type": "library",
-    "license": "https://www.koolreport.com/license#mit-license",
+    "license": "MIT",
     "require": {
         "mongodb/mongodb": "^1.1"
     }
