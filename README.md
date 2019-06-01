@@ -2,7 +2,7 @@
 
 This package allows you to connect and get data from MongoDB.
 
-#Installation
+# Installation
 
 ## By downloading .zip file
 
