@@ -4,9 +4,23 @@ This package allows you to connect and get data from MongoDB.
 
 #Installation
 
-1. Download the zip file.
-2. Unzip
-3. Copy folder `mongodb` to the folder `koolreport/packages`
+## By downloading .zip file
+
+1. [Download](https://www.koolreport.com/packages/mongodb)
+2. Unzip the zip file
+3. Copy the folder `mongodb` into `koolreport` folder so that look like below
+
+```bash
+koolreport
+├── core
+├── mongodb
+```
+
+## By composer
+
+```
+composer require koolreport\mongodb
+```
 
 # Documentation
 
