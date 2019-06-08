@@ -19,7 +19,7 @@ koolreport
 ## By composer
 
 ```
-composer require koolreport\mongodb
+composer require koolreport/mongodb
 ```
 
 # Documentation
