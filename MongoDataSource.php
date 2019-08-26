@@ -9,22 +9,32 @@
  */
 
 /*
- * The user can declare connection string
- * array(
- * 		"connectionString"="mongo://{username}:{password}@localhost:65432",
- *    'database' => 'test'
- * )
- * or
- * array(
- * 		"host"=>"mongo://localhost:65432",
- * 		"username":"username",
- * 		"password":"password",
- *    'database' => 'test'
- * )
- * ->query(array(
- *    'collection' => 'sales'
- * ))
- * 
+  The user can declare connection string
+    array(
+        "connectionString"="mongo://{username}:{password}@localhost:65432",
+        'database' => 'test'
+    )
+    or
+    array(
+        "host"=>"mongo://localhost:65432",
+        "username":"username",
+        "password":"password",
+        'database' => 'test'
+    )
+    ->query(array(
+        'collection' => 'sales',
+        'find' => ['age' => ['$gte' => '40']],
+        'options' => [
+            'skip' => 0,
+            'limit' => 5,
+            'projection' => [
+                '_id' => 0,
+                'name' => 1,
+                'age' => 1,
+            ],    
+        ],
+    ))
+  
  */
 
 namespace koolreport\mongodb;
@@ -54,12 +64,9 @@ class MongoDataSource extends DataSource
         $this->charset = Utility::get($this->params,"charset","utf8");
         $this->database = Utility::get($this->params,"database",null);
         
-        if($this->connectionString)
-        {
-      $this->mongoClient = new \MongoDB\Client($this->connectionString);
-        }
-        else
-        {
+        if($this->connectionString) {
+            $this->mongoClient = new \MongoDB\Client($this->connectionString);
+        } else {
             $this->mongoClient = new \MongoDB\Client($this->host, array(
                 "username"=>$this->username,
                 "password"=>$this->password,
@@ -67,10 +74,11 @@ class MongoDataSource extends DataSource
         }
     }
   
-    function query($params) {
-            $this->collection = Utility::get($params, "collection", null);
-            $this->find = Utility::get($params, "find", array());
-            $this->options = Utility::get($params, "options", array());
+    function query($params) 
+    {
+        $this->collection = Utility::get($params, "collection", null);
+        $this->find = Utility::get($params, "find", array());
+        $this->options = Utility::get($params, "options", array());
         return $this;
     }
     
@@ -87,10 +95,8 @@ class MongoDataSource extends DataSource
         );
 
         $type = strtolower(gettype($value));
-        foreach($map as $key=>$value)
-        {
-            if(strpos($type,$key)!==false)
-            {
+        foreach($map as $key=>$value) {
+            if(strpos($type,$key)!==false) {
                 return $value;
             }			
         }
@@ -102,24 +108,21 @@ class MongoDataSource extends DataSource
         $data = array();
         $collection = $this->mongoClient->{$this->database}->{$this->collection};
         $cursor = $collection->find($this->find, $this->options);
-        foreach ($cursor as $row)
-            array_push($data, (array)$row);
-        $firstRow = Utility::get($data, 0, []);
-        $columnNames = array_keys($firstRow);
-        
-        $metaData = array("columns"=>array());
-        for($i=0; $i<count($columnNames); $i++) {						
-        $metaData["columns"][$columnNames[$i]] = array(
-            "type"=>(isset($firstRow)) ? 
-                $this->guessType($firstRow[$columnNames[$i]]) : "unknown");
-        }
-        
-        $this->sendMeta($metaData, $this);
-        $this->startInput(null);
-        
-        $rowNum = count($data);
-        for($i=0; $i<$rowNum; $i++) {
-            $this->next($data[$i], $this);	
+        foreach ($cursor as $i => $row) {
+            $row = (array) $row;
+            if ($i === 0) {
+                $firstRow = $row;
+                $columnNames = array_keys($firstRow);
+                $metaData = array("columns"=>array());
+                for($i=0; $i<count($columnNames); $i++) {						
+                $metaData["columns"][$columnNames[$i]] = array(
+                    "type"=>(isset($firstRow)) ? 
+                        $this->guessType($firstRow[$columnNames[$i]]) : "unknown");
+                }
+                $this->sendMeta($metaData, $this);
+                $this->startInput(null);
+            }
+            $this->next($row, $this);	
         }
         $this->endInput(null);
     }

@@ -1,31 +1,33 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46f8588cb80f4e87b765238de8a0a5f4",
+    "content-hash": "d4d27cfd4bae970d65fd306b29f1be1d",
     "packages": [
         {
             "name": "mongodb/mongodb",
-            "version": "1.1.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "a307dd60e71e1291c60927ea4f3a1905146063f5"
+                "reference": "18fca8cc8d0c2cc07f76605760d20632bb3dab96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/a307dd60e71e1291c60927ea4f3a1905146063f5",
-                "reference": "a307dd60e71e1291c60927ea4f3a1905146063f5",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/18fca8cc8d0c2cc07f76605760d20632bb3dab96",
+                "reference": "18fca8cc8d0c2cc07f76605760d20632bb3dab96",
                 "shasum": ""
             },
             "require": {
-                "ext-mongodb": "^1.2.0",
-                "php": ">=5.4"
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-mongodb": "^1.5.0",
+                "php": ">=5.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8"
+                "phpunit/phpunit": "^4.8.36 || ^6.4"
             },
             "type": "library",
             "autoload": {
@@ -46,12 +48,12 @@
                     "email": "jmikola@gmail.com"
                 },
                 {
-                    "name": "Hannes Magnusson",
-                    "email": "bjori@mongodb.com"
-                },
-                {
                     "name": "Derick Rethans",
                     "email": "github@derickrethans.nl"
+                },
+                {
+                    "name": "Katherine Walker",
+                    "email": "katherine.walker@mongodb.com"
                 }
             ],
             "description": "MongoDB driver library",
@@ -62,7 +64,7 @@
                 "mongodb",
                 "persistence"
             ],
-            "time": "2017-02-16T18:40:32+00:00"
+            "time": "2019-07-02T18:04:14+00:00"
         }
     ],
     "packages-dev": [],
