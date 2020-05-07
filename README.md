@@ -57,7 +57,19 @@ class MyReport extends \koolreport\KoolReport
     public function setup()
     {
         $this->src('mongo_purchase')
-        ->query(array("collection"=>"cPurchases"))
+        ->query(array(
+            'collection' => 'cPurchases',
+            'find' => ['age' => ['$gte' => '40']],
+            'options' => [
+                'skip' => 0,
+                'limit' => 5,
+                'projection' => [
+                    '_id' => 0,
+                    'name' => 1,
+                    'age' => 1,
+                ],    
+            ],
+        ))
         ->pipe(..)
         ->pipe(...)
         ...
