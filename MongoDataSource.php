@@ -54,9 +54,11 @@ class MongoDataSource extends DataSource
     protected $options;
     
     protected $mongoClient;
+    public static $connections;
     
     protected function onInit()
     {
+        $connection = Utility::get($this->params, "connection");
         $this->connectionString = Utility::get($this->params,"connectionString");
         $this->host = Utility::get($this->params,"username");
         $this->username = Utility::get($this->params,"username");
@@ -64,13 +66,27 @@ class MongoDataSource extends DataSource
         $this->charset = Utility::get($this->params,"charset","utf8");
         $this->database = Utility::get($this->params,"database",null);
         
-        if($this->connectionString) {
-            $this->mongoClient = new \MongoDB\Client($this->connectionString);
+        if (is_object($connection)) {
+            $this->mongoClient = $connection;
+        } else if($this->connectionString) {
+            $key1 = md5($this->connectionString);
+            if (isset(MongoDataSource::$connections[$key1])) {
+                $this->mongoClient = MongoDataSource::$connections[$key1];
+            } else {
+                $this->mongoClient = new \MongoDB\Client($this->connectionString);
+                MongoDataSource::$connections[$key1] = $this->mongoClient;
+            }
         } else {
-            $this->mongoClient = new \MongoDB\Client($this->host, array(
-                "username"=>$this->username,
-                "password"=>$this->password,
-            ));
+            $key2 = md5($this->host . $this->username . $this->password);
+            if (isset(MongoDataSource::$connections[$key2])) {
+                $this->mongoClient = MongoDataSource::$connections[$key2];
+            } else {
+                $this->mongoClient = new \MongoDB\Client($this->host, array(
+                    "username"=>$this->username,
+                    "password"=>$this->password,
+                ));
+                MongoDataSource::$connections[$key2] = $this->mongoClient;
+            }
         }
     }
   
@@ -105,7 +121,6 @@ class MongoDataSource extends DataSource
   
     public function start()
     {
-        $data = array();
         $collection = $this->mongoClient->{$this->database}->{$this->collection};
         $cursor = $collection->find($this->find, $this->options);
         foreach ($cursor as $i => $row) {

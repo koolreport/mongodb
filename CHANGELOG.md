@@ -1,5 +1,8 @@
 # Change Log
 
+## Version 1.3.0
+1. Add `connection` option to use an existed connection.
+
 ## Version 1.2.0
 
 1. Change data retrieval algorithm
